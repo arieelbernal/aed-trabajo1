@@ -1,12 +1,17 @@
+"""
+    Trabajo práctico número 1 del grupo TP1-G051
+"""
+
 import random
 
 # Agregar interactividad haciendo que el usuario apriete un botón o clic para hacer que sea un juego.
 # Mostrar puntaje parcial después de cada tirada.
 
 # Datos
-# nombre_del_jugador = input("¡Bienvenido al casino! ¡Vamos a jugar Blackjack! ¿Cuál es tu nombre?: ")
-# print("¡ Un gusto en conocerte", nombre_del_jugador, "! jugarás contra nuestro croupier Ariel, es muy bueno jugando."
-#  " Ten mucho cuidado...")
+# Constantes
+PUNTAJE_MAXIMO = 21
+
+# Fin de la carga de Constantes
 palos_jugador = ('Espadas', 'Corazones', 'Diamantes', 'Tréboles')
 palos_croupier = ('Espadas', 'Corazones', 'Diamantes', 'Tréboles')
 J, Q, K = 'Comodín (J)', 'Reina (Q)', 'Rey (K)'  # Inicializamos variables para las cadenas de texto.
@@ -123,7 +128,7 @@ if palo_aleatorio_jugador_primera_tirada == palo_aleatorio_croupier_primera_tira
 
 # Si ambos son tanto del mismo palo como el mismo número en la primera tirada...
 if palo_aleatorio_jugador_primera_tirada == palo_aleatorio_croupier_primera_tirada and valor_aleatorio_jugador_primer_turno == valor_aleatorio_croupier_primer_turno:
-  print("¡Además de ser del mismo palo, ambas cartas son del mismo valor!")
+   print("¡Además de ser del mismo palo, ambas cartas son del mismo valor!")
 
 # Quien va ganando en la primera tirada...
 if puntos_jugador_primera_tirada > puntos_croupier_primera_tirada:

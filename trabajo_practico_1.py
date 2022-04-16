@@ -1,16 +1,16 @@
 """
-    Trabajo práctico número 1 del grupo
+    Trabajo práctico número 1 del grupo TP1-G051
 """
 
 import random
 
 # Datos
-cartas = ("A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K")
+cartas = ("Ás (A)", 2, 3, 4, 5, 6, 7, 8, 9, 10, "Comodín (J)", "Reina (Q)", "Rey (K)")
 palos = ("Picas", "Corazones", "Diamantes", "Tréboles")
 salio_figura = False
 PUNTAJE_MAXIMO = 21
 # jugador = input("Ingresa tu nombre: ")
-jugador = "Ariel"
+jugador = input("¡Bienvenido al Blackjack! Por favor ingrese su nombre: ")
 puntaje_jugador = 0
 puntaje_croupier = 0
 mismo_palo = False
@@ -19,7 +19,7 @@ cartas_iguales= ("", "")
 # Procedimientos
 # Primer tirada del jugador
 carta_al_azar_jugador = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_jugador[0] == "A":
+if carta_al_azar_jugador[0] == "Ás (A)":
     puntaje_jugador += 11
 else:
     if cartas.index(carta_al_azar_jugador[0]) > 9:
@@ -33,12 +33,13 @@ print(jugador, "tu puntaje es:", puntaje_jugador)
 
 # Primera tirada del croupier
 carta_al_azar_croupier = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_croupier[0] == "A":
+if carta_al_azar_croupier[0] == "Ás (A)":
     puntaje_croupier += 11
 else:
     if cartas.index(carta_al_azar_croupier[0]) > 9:
         puntaje_croupier += 10
         salio_figura = True
+        print("¡Ha salido la figura", random.randrange(carta_al_azar_jugador[0]), "en la primera tirada del croupier!")
     else:
         puntaje_croupier += carta_al_azar_croupier[0]
 print("La carta del croupier es", carta_al_azar_croupier[0], "de",
@@ -53,7 +54,7 @@ if carta_al_azar_jugador[1] == carta_al_azar_croupier[1]:
 
 # Segunda tirada jugador
 carta_al_azar_jugador = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_jugador[0] == "A":
+if carta_al_azar_jugador[0] == "Ás (A)":
     if puntaje_jugador + 11 <= PUNTAJE_MAXIMO:
         puntaje_jugador += 11
     else:
@@ -70,7 +71,7 @@ print(jugador, "tu puntaje es:", puntaje_jugador)
 
 # Segunda tirada croupier
 carta_al_azar_croupier = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_croupier[0] == "A":
+if carta_al_azar_croupier[0] == "Ás (A)":
     if puntaje_croupier + 11 <= PUNTAJE_MAXIMO:
         puntaje_croupier += 11
     else:
@@ -87,7 +88,7 @@ print("El puntaje del croupier es:", puntaje_croupier)
 
 # Tercera tirada del jugador
 carta_al_azar_jugador = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_jugador[0] == "A":
+if carta_al_azar_jugador[0] == "Ás (A)":
     if puntaje_jugador + 11 <= PUNTAJE_MAXIMO:
         puntaje_jugador += 11
         print("Tu carta es:", carta_al_azar_jugador[0], "de",
@@ -112,7 +113,7 @@ else:
 
 # Tercera tirada del croupier
 carta_al_azar_croupier = (random.choice(cartas), random.choice(palos))
-if carta_al_azar_croupier[0] == "A":
+if carta_al_azar_croupier[0] == "Ás (A)":
     if puntaje_croupier + 11 <= PUNTAJE_MAXIMO:
         puntaje_croupier += 11
         print("La carta del croupier es", carta_al_azar_croupier[0], "de",

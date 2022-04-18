@@ -239,7 +239,8 @@ if puntaje_jugador < LIMITE_TERCERA_JUGADA:
 
     print("La carta del jugador es:", carta_al_azar_jugador[0], "de",
           carta_al_azar_jugador[1])
-    print(jugador, "tu puntaje en la tercera tirada es:", puntaje_jugador)
+
+print(jugador, "tu puntaje en la tercera tirada es:", puntaje_jugador)
 
 # Tercera tirada del croupier (opcional si el puntaje es menor o igual a 16).
 carta_al_azar_croupier = (random.choice(cartas), random.choice(palos))
@@ -259,7 +260,7 @@ if puntaje_croupier < LIMITE_TERCERA_JUGADA:
             puntaje_croupier += carta_al_azar_croupier[0]
     print("La carta del croupier es:", carta_al_azar_croupier[0], "de",
           carta_al_azar_croupier[1])
-    print("El puntaje del croupier en la tercera tirada es:", puntaje_croupier)
+print("El puntaje del croupier en la tercera tirada es:", puntaje_croupier)
 
 # Condiciones de victoria, derrota o empate por puntuación:
 if puntaje_croupier == puntaje_jugador <= 21 or \

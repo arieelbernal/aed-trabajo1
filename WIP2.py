@@ -29,9 +29,8 @@ jugador = input("  ¡Bienvenido al Blackjack! Por favor ingrese su nombre: ")
 print('*' * 60)
 print('                    REGLAS DEL JUEGO')
 print('*' * 60)
-print("En este juego estimad@", jugador, "para ganar necesitas conseguir\n \
-      un puntaje superior al de nuestro croupier ""y además, \n menor \
-       o igual a 21.")
+print("En este juego estimad@", jugador, "para ganar necesitas conseguir\n "
+      "un puntaje superior al de nuestro croupier ""y además, \n menor o igual a 21.")
 print()
 print("Se disputarán 3 tiradas, en las que en la primera y se \n"
       "mostrarán si ambas cartas son del mismo palo y del\n "
@@ -129,7 +128,7 @@ print("El puntaje del croupier en la primera tirada es:",
 # Si ambos comparten el mismo palo en la primera tirada...
 if carta_al_azar_jugador[1] == carta_al_azar_croupier[1]:
     primera_carta_igual_palo = True
-    # Si ambos son tambien el mismo número en la primera tirada...
+    # Si ambos son también el mismo número en la primera tirada...
     if carta_al_azar_jugador[0] == carta_al_azar_croupier[0]:
         misma_primera_carta = True
         primera_carta = carta_al_azar_jugador
@@ -295,4 +294,3 @@ if bandera_de_aparicion_de_figuras:
     print("En esta partida aparecio alguna de estas cartas: Jack (J), Queen \
 (Q) o King (K)")
     print('*' * 60)
-

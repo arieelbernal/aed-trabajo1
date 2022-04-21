@@ -1,26 +1,28 @@
 """
-    Trabajo práctico número 1 del grupo TP1-G051
+Trabajo práctico número 1 del grupo TP1-G051
+Integrantes:Berzero, Virginia Maria; Legajo: 96631; Comisión: 1K06
+            Jiménez, Melani Milagros; Legajo: 94443; Comisión: 1K06
+            Murúa, Martina; Legajo: 94644; Comisión: 1K06
+            Rodriguez Bernal, Ariel Hernán; Legajo: 89985; Comisión: 1K06
+            Romero Moreno, Oscar Alfonso; Legajo: 96454; Comisión: 1K06
+
+Desarrollo de una partida de blackjack contra la computadora, se utiliza
+la librería random para obtener valores aleatorios en las cartas.
+El juego consta de tres tiradas, las dos primeras determinan si la
+computadora (croupier) o el jugador reciben la tercera, esto sucede
+en caso de que el puntaje parcial sea menor a 17.
+Todos los mensajes fueron codificados para hacer la experiencia de
+usuario más amena y entendible, por ejemplo el resultado de la partida
+puede ser el mensaje "Ganaste", "Perdiste" o "Ninguno gana esta vez"
+y los mensajes de cada jugada tambien cumplen la misma regla.
 """
 
 import random
-
-print('*' * 60)
-print("           Trabajo Práctico #1 Grupo TP1-G051  ")
-print()
-print("                       Integrantes: ")
-print()
-print("     Berzero, Virginia Maria; Legajo: 96631; Comisión: 1K06 ")
-print("    Jiménez, Melani Milagros; Legajo: 94443; Comisión: 1K06 ")
-print("       Murúa, Martina; Legajo: 94644; Comisión: 1K06 ")
-print("Rodriguez Bernal, Ariel Hernán; Legajo: 89985; Comisión: 1K06 ")
-print(" Romero Moreno, Oscar Alfonso; Legajo: 96454; Comisión: 1K06 ")
-print('*' * 60)
 
 # Datos
 # Constantes
 PUNTAJE_MAXIMO = 21
 LIMITE_TERCERA_JUGADA = 17
-# Fin de la carga de Constantes
 
 # Nombre del jugador, reglas del juego.
 print()
@@ -32,18 +34,19 @@ print('*' * 60)
 print("En este juego estimad@", jugador, "para ganar necesitas conseguir\n "
       "un puntaje superior al de nuestro croupier ""y además, \n menor o igual a 21.")
 print()
-print("Se disputarán 3 tiradas, en las que en la primera y se \n"
-      "mostrarán si ambas cartas son del mismo palo y del\n "
-      "mismo valor si ambas resultan ser del mismo palo.")
+print("Se disputarán 3 tiradas, en las que en la primera se\n"
+      "evaluara si ambas cartas son del mismo palo y del\n"
+      "mismo valor, en ambos casos se notificara con un mensaje\n"
+      "al final del programa.")
 print()
-print("Se mostrará al final de cada turno el puntaje parcial\n "
+print("Se mostrará al final de cada turno el puntaje parcial\n"
       "obtenido de cada tirada y al final se mostrará\n el "
       "puntaje total.")
 print()
 print("En caso de que te excedas de los 21 puntos, o tengas menos\n"
       "puntos que el croupier, habrás perdido el juego.")
 print()
-print("Si ustedes dos tienen el mismo puntaje o llegan a tener \n"
+print("Si ustedes dos tienen el mismo puntaje o llegan a tener\n"
       "ambos 21, habrán terminado en un empate.")
 print()
 print('*' * 60)
@@ -51,7 +54,7 @@ print('             ¿CUÁNTOS PUNTOS VALE CADA CARTA?')
 print('*' * 60)
 print('- \'As\' = El Ás vale 11 si el puntaje es menor a 11 y vale 1\n'
       'cuando el puntaje es mayor o igual a 11.')
-print('- \'Jack (J)\', \'Queen (Q)\' o \'King (K)\' = Las tres cartas \n'
+print('- \'Jack (J)\', \'Queen (Q)\' o \'King (K)\' = Las tres cartas\n'
       'valen 10 puntos respectivamente cada una.')
 print('- Cartas de Valor Numérico = Tendrán el mismo valor que el\n'
       'número que indica la misma carta.')
@@ -149,7 +152,6 @@ else:
         print('*' * 60)
 # Fin de comparativa primera tirada
 
-print('*' * 60)
 print(input("Presiona la tecla \"Enter\" para jugar la segunda tirada."))
 
 # Inicio Segunda Tirada
@@ -162,8 +164,7 @@ if carta_al_azar_jugador[0] == "As (A)":
     if puntaje_jugador < 11:
         puntaje_jugador += 11
     else:
-        if puntaje_jugador >= 11:
-            puntaje_jugador += 1
+        puntaje_jugador += 1
 else:
     if carta_al_azar_jugador[0] == "Jack (J)" or \
             carta_al_azar_jugador[0] == "Queen (Q)" or \
@@ -197,7 +198,7 @@ print("La carta del croupier es:", carta_al_azar_croupier[0], "de",
 print("El puntaje del croupier en la segunda tirada es:", puntaje_croupier)
 
 # Comparativa puntos jugador vs. croupier segunda tirada.
-if puntaje_croupier < puntaje_jugador < 21 and puntaje_croupier < PUNTAJE_MAXIMO:
+if puntaje_croupier < puntaje_jugador < PUNTAJE_MAXIMO and puntaje_croupier < PUNTAJE_MAXIMO:
     print('*' * 60)
     print("                 ¡Muy bien", jugador, "!")
     print('*' * 60)
@@ -206,8 +207,8 @@ if puntaje_jugador < puntaje_croupier < PUNTAJE_MAXIMO and \
     print('*' * 60)
     print("                       ¡Que mal!")
     print('*' * 60)
-if puntaje_jugador == puntaje_croupier and puntaje_croupier < 21 and \
-        puntaje_jugador < 21:
+if puntaje_jugador == puntaje_croupier and puntaje_croupier < PUNTAJE_MAXIMO and \
+        puntaje_jugador < PUNTAJE_MAXIMO:
     print('*' * 60)
     print("                      ¡¿Empatad@s?!")
     print('*' * 60)
@@ -262,35 +263,37 @@ if puntaje_croupier < LIMITE_TERCERA_JUGADA:
 print("El puntaje del croupier en la tercera tirada es:", puntaje_croupier)
 
 # Condiciones de victoria, derrota o empate por puntuación:
-if puntaje_croupier == puntaje_jugador <= 21 or \
+if puntaje_croupier == puntaje_jugador <= PUNTAJE_MAXIMO or \
         (puntaje_jugador > PUNTAJE_MAXIMO and
          puntaje_croupier > PUNTAJE_MAXIMO):
     print('*' * 60)
     print("        ¡NINGUNO GANA ESTA VEZ!")
+    print('*' * 60)
 else:
-    if (puntaje_croupier < puntaje_jugador <= 21) or \
+    if (puntaje_croupier < puntaje_jugador <= PUNTAJE_MAXIMO) or \
             puntaje_croupier > PUNTAJE_MAXIMO:
         print('*' * 60)
         print("                          ¡GANASTE!")
         print('*' * 60)
         print(random.choice(mensajes_aleatorios_victoria))
+        print('*' * 60)
     else:
         print('*' * 60)
         print("                          ¡PERDISTE!")
         print('*' * 60)
         print(random.choice(mensajes_aleatorios_derrota))
+        print('*' * 60)
 
 # Print de analisis de la primera carta
 if primera_carta_igual_palo:
-    print('*' * 60)
     print("La primera carta tanto para el jugador como para \
-el croupier fue del mismo palo")
+el croupier fue del mismo palo.")
     if misma_primera_carta:
-        print("No solo eso, fue la misma carta:", primera_carta[0], "de",
-              primera_carta[1])
+        print("No solo eso, sino que tambien fue exactamente la misma:",
+              primera_carta[0], "de", primera_carta[1])
+    print('*' * 60)
 # Bandera de figuras en la partida:
 if bandera_de_aparicion_de_figuras:
-    print('*' * 60)
     print("En esta partida aparecio alguna de estas cartas: Jack (J), Queen \
 (Q) o King (K)")
     print('*' * 60)

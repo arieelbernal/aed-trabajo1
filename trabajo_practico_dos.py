@@ -30,7 +30,6 @@ def validacion(monto):
 def jugar_una_mano(pozo):
     hay_as = False
     hay_as_croupier = False
-    blackjack_natural = False
     acum_jugador_puntaje = 0
     acum_croupier_puntaje = 0
     cont_cartas_jugador = 0

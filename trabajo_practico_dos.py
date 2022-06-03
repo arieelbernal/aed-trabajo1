@@ -52,9 +52,8 @@ def jugar_una_mano(pozo):
         acum_jugador_puntaje += carta[0]
         cont_cartas_jugador += 1
         i += 1
-    if acum_jugador_puntaje == 21 and (carta[0] == 11 and carta[1] == 10) or (carta[0] == 10 and carta[1] == 11):
-        blackjack_natural = True
-        print("¡Ocurrió un Blackjack Natural! (Ás + una carta de valor 10.")
+    # if acum_jugador_puntaje == 21 and (carta[0] == 11 and carta[1] == 10) or (carta[0] == 10 and carta[1] == 11):
+    #     blackjack_natural = True
     print()
     print("La suma de las cartas del jugador hasta el momento \nes: ", acum_jugador_puntaje)
     print('*-' * 25)
@@ -106,13 +105,16 @@ def jugar_una_mano(pozo):
             acum_croupier_puntaje -= 10
             hay_as_croupier = False
         acum_croupier_puntaje += (carta_crupier[0])
-        if acum_croupier_puntaje == 21 and (carta_crupier[0] == 11 and carta_crupier[1] == 10) or (carta_crupier[0] == 10 and carta_crupier[1] == 11):
-            blackjack_natural = True
-            print("¡Ocurrió un Blackjack Natural! (Ás + una carta de valor 10.")
+        # if acum_croupier_puntaje == 21 and (carta_crupier[0] == 11 and carta_crupier[1] == 10) or (carta_crupier[0] == 10 and carta_crupier[1] == 11):
+        #     blackjack_natural = True
         print()
         print("La suma de las cartas del croupier hasta el momento \nes: ", acum_croupier_puntaje)
         print('*-' * 25)
-    ganador, pozo = definir_ganador(acum_jugador_puntaje, acum_croupier_puntaje, cont_cartas_jugador, cont_cartas_croupier, pozo)
+        print("Valores de parametros", "puntaje jugador", acum_jugador_puntaje, "puntaje croupier",
+              acum_croupier_puntaje, "Canntidad cartas jugador", cont_cartas_jugador, "Canntidad cartas croupier",
+              cont_cartas_croupier, "Pozo", pozo)
+    ganador, pozo, blackjack_natural = definir_ganador(acum_jugador_puntaje, acum_croupier_puntaje, cont_cartas_jugador,
+                                                       cont_cartas_croupier, pozo)
     return ganador, pozo, blackjack_natural
 
 
@@ -125,14 +127,17 @@ def bandera_1er_carta_as(carta):
 # Determinar ganador
 def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont_cartas_croupier, pozo):
     ganador = None
+    blackjack_nat = False
     if puntaje_jugador > 21 and puntaje_croupier > 21:
         ganador = "Croupier"
         pozo -= apuesta_mano
-    elif puntaje_jugador == puntaje_croupier and puntaje_jugador <= 21 and puntaje_croupier <= 21:
+    elif puntaje_jugador == puntaje_croupier and puntaje_jugador < 21 and puntaje_croupier < 21:
         ganador = "¡Fue un empate!"
     elif puntaje_jugador == 21 and puntaje_croupier == 21:
         if cont_cartas_jugador == 2 and cont_cartas_croupier == 2:
             ganador = "¡Fue un empate!"
+            blackjack_nat = True
+            print("¡Ocurrió un Blackjack Natural! (Ás + una carta de valor 10.")
         elif cont_cartas_jugador != 2 and cont_cartas_croupier == 2:
             ganador = "Croupier"
             pozo -= apuesta_mano
@@ -148,13 +153,15 @@ def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont
     elif puntaje_jugador > puntaje_croupier:
         ganador = "Jugador"
         pozo += apuesta_mano
-    elif (cont_cartas_jugador == 2 and puntaje_jugador == 21) and cont_cartas_croupier >= 2:
+    elif cont_cartas_jugador == 2 and puntaje_jugador == 21:
         ganador = "Jugador"
         print("¡El jugador obtuvo un Blackjack Natural!")
+        blackjack_nat = True
         pozo += apuesta_mano
-    elif (cont_cartas_croupier == 2 and puntaje_croupier == 21) and cont_cartas_jugador >= 2:
+    elif cont_cartas_croupier == 2 and puntaje_croupier == 21:
         ganador = "Croupier"
         print("¡El croupier obtuvo un Blackjack Natural!")
+        blackjack_nat = True
         pozo -= apuesta_mano
     elif (cont_cartas_jugador == 2 and puntaje_jugador == 21) and (cont_cartas_croupier == 2 and puntaje_croupier == 21):
         ganador = "¡Fue un empate!"
@@ -166,7 +173,7 @@ def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont
     else:
         print("El ganador es: ", ganador)
     print("Su pozo actual es:", pozo)
-    return ganador, pozo
+    return ganador, pozo, blackjack_nat
 
 
 def mayor(primer_valor, segundo_valor):
@@ -188,7 +195,7 @@ opcion = None
 contador_jugadas = 0
 contador_ganadas_jugador = 0
 racha_croupier = 0
-racha_mas_larga = 0
+mayor_racha_croupier = 0
 pozo_maximo = 0
 acumulador_apuestas_jugador = 0
 mayor_perdida = 0
@@ -221,7 +228,8 @@ while opcion != "0" and (bandera_usuario_ingreso_numero_correcto is True) and ba
     print('*-' * 25)
     print()
     print('*-' * 25)
-    print("\t1) APOSTAR (AUMENTE EL POZO) \n\t2) JUEGUE UNA MANO (APUESTE Y BUENA SUERTE) \n\t0) SALIR")
+    print("\t1) APOSTAR (AUMENTE EL POZO) \n\t2) JUEGUE UNA MANO (APUESTE Y BUENA SUERTE) \n\t0) SALIR Y MOSTRAR LOS "
+          "RESULTADOS")
     print('*-' * 25)
     opcion = input("Seleccione una opción: ")
 
@@ -241,12 +249,13 @@ while opcion != "0" and (bandera_usuario_ingreso_numero_correcto is True) and ba
         if validacion(apuesta_mano) <= pozo:
             acumulador_apuestas_jugador += apuesta_mano
             ganador_jugada, pozo, blackjack_natural = jugar_una_mano(pozo)
-            if ganador_jugada == "jugador":
+            if ganador_jugada == "Jugador":
                 racha_croupier = 0
                 contador_ganadas_jugador += 1
-            elif ganador_jugada == "croupier":
+            elif ganador_jugada == "Croupier":
                 racha_croupier += 1
                 mayor_perdida = mayor(mayor_perdida, apuesta_mano)
+                mayor_racha_croupier = mayor(mayor_racha_croupier, racha_croupier)
             contador_jugadas += 1
             pozo_maximo = mayor(pozo, pozo_maximo)
             if blackjack_natural:
@@ -266,7 +275,7 @@ while opcion != "0" and (bandera_usuario_ingreso_numero_correcto is True) and ba
 print('*-' * 25)
 print("RESULTADOS DE LA PARTIDA: ")
 print()
-print(f'La racha mas larga del croupier fue de {mayor(racha_mas_larga, racha_croupier)} partidas ganadas.')
+print(f'La racha mas larga del croupier fue de {mayor_racha_croupier} partidas ganadas.')
 print(f'Porcentaje de victorias del jugador {contador_ganadas_jugador*100/contador_jugadas}%.')
 print(f'Mayor pozo que tuvo el jugador: {pozo_maximo}.')
 print(f'Valor promedio de apuestas por jugada: {acumulador_apuestas_jugador/contador_jugadas} pesos.')

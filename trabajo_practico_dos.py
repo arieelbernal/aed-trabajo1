@@ -153,11 +153,9 @@ def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont
     elif puntaje_jugador > puntaje_croupier:
         ganador = "Jugador"
         pozo += apuesta_mano
-    elif cont_cartas_jugador == 2 and puntaje_jugador == 21:
-        ganador = "Jugador"
-        print("¡El jugador obtuvo un Blackjack Natural!")
-        blackjack_nat = True
-        pozo += apuesta_mano
+        if cont_cartas_jugador == 2 and puntaje_jugador == 21:
+            print("¡El jugador obtuvo un Blackjack Natural!")
+            blackjack_nat = True
     elif cont_cartas_croupier == 2 and puntaje_croupier == 21:
         ganador = "Croupier"
         print("¡El croupier obtuvo un Blackjack Natural!")
@@ -180,9 +178,8 @@ def mayor(primer_valor, segundo_valor):
     if primer_valor > segundo_valor:
         return primer_valor
     return segundo_valor
+# Fin sector de funciones
 
-
-# Fin Sector Funciones
 
 # Sector Principal
 print('*-' * 25)
@@ -215,7 +212,7 @@ while bandera_carga_pozo_inicial is True:
         bandera_usuario_ingreso_numero_correcto = False
         continue
     else:
-        if pozo >= 0 and pozo <= 100000:
+        if 0 <= pozo <= 100000:
             bandera_usuario_ingreso_numero_correcto = True
             print("El valor inicial del pozo es de: ", pozo, "pesos.")
             bandera_carga_pozo_inicial = False

@@ -1,27 +1,21 @@
 import random
+import time
+
 
 # Sector Funciones
-
-
 def generacion_carta():
     numero = (2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11)
     nombre_carta = ("2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "AS")
     palo = ("Corazon", "Trebol", "Picas", "Diamante")
     x = random.randint(0, 12)
     y = random.randint(0, 3)
-    carta_obtenida = (numero[x], nombre_carta[x], palo[y])
-    return carta_obtenida
+    return numero[x], nombre_carta[x], palo[y]
 
-# Hay que arreglar en la validación un error en donde si el usuario selecciona la opción 1 (de apostar)
-# e ingresa un número negativo, el pozo queda bien sin modificar, PERO, si el usuario vuelve a ingresar
-# un monto positivo que puede ser útil, el pozo no se modifica.
-# REVISAR INTERACCIÓN CON LÍNEA 227!!!!
 
 def validacion(monto):
     if 100000 >= monto + pozo > 0 and monto > 0 and monto % 5 == 0:
         return monto
     else:
-        # Acá (posiblemente) esté el error, en la bandera ok, que invalide el cambio. Revisar
         print("ERROR, el pozo no puede sobrepasar 100.000 ni \ntampoco podés apostar montos negativos.")
         ok = False
         return ok
@@ -36,7 +30,6 @@ def jugar_una_mano(pozo):
     cont_cartas_croupier = 0
     i = 0
 
-    #  print(apuesta_mano)
     # CARTAS JUGADOR
     print('*-' * 25)
     print("\t\tLas cartas del jugador son:")
@@ -44,15 +37,15 @@ def jugar_una_mano(pozo):
     while i < 2:
         carta = (generacion_carta())
         print(carta)
-        if i == 0:
-            bandera_1er_carta_as(carta)
+        time.sleep(1.5)
         if carta[0] == 11:
             hay_as = True
         acum_jugador_puntaje += carta[0]
         cont_cartas_jugador += 1
         i += 1
-    # if acum_jugador_puntaje == 21 and (carta[0] == 11 and carta[1] == 10) or (carta[0] == 10 and carta[1] == 11):
-    #     blackjack_natural = True
+        if hay_as and acum_jugador_puntaje > 21:
+            acum_jugador_puntaje -= 10
+    hay_as = False
     print()
     print("La suma de las cartas del jugador hasta el momento \nes: ", acum_jugador_puntaje)
     print('*-' * 25)
@@ -63,6 +56,7 @@ def jugar_una_mano(pozo):
     print()
     carta_croupier = (generacion_carta())
     print(carta_croupier)
+    time.sleep(1.5)
     if carta_croupier[0] == 11:
         hay_as_croupier = True
     cont_cartas_croupier += 1
@@ -73,22 +67,24 @@ def jugar_una_mano(pozo):
 
     # CARTAS JUGADOR
     print('*-' * 25)
-    otra_carta = input("\t\tQuiere pedir otra carta?, s/n: ")
+    otra_carta = input("Quiere pedir otra carta?, s/n: ")
     print('*-' * 25)
     print()
     while acum_jugador_puntaje < 21 and otra_carta == "s":
         carta = generacion_carta()
+        if carta[0] == 11:
+            hay_as = True
         print(carta)
+        if hay_as:
+            acum_jugador_puntaje += 11
         if acum_jugador_puntaje > 21 and hay_as:
             acum_jugador_puntaje -= 10
             hay_as = False
-        acum_jugador_puntaje += (carta[0])
+        else:
+            acum_jugador_puntaje += (carta[0])
         cont_cartas_jugador += 1
-        print("La suma de las cartas del jugador hasta el momento \nes: ", acum_jugador_puntaje)
-        print()
-        print('*-' * 25)
-        otra_carta = input("\t\tQuiere pedir otra carta?, s/n: ")
-        print('*-' * 25)
+        print("La suma de las cartas del jugador hasta el momento es: ", acum_jugador_puntaje)
+        otra_carta = input("Quiere pedir otra carta?, s/n: ")
 
     # CARTA CROUPIER
     while acum_croupier_puntaje < 17:
@@ -100,12 +96,11 @@ def jugar_una_mano(pozo):
         if carta_crupier[0] == 11:
             hay_as_croupier = True
         print(carta_crupier)
+        time.sleep(2.5)
         if acum_croupier_puntaje > 21 and hay_as_croupier:
             acum_croupier_puntaje -= 10
             hay_as_croupier = False
         acum_croupier_puntaje += (carta_crupier[0])
-        # if acum_croupier_puntaje == 21 and (carta_crupier[0] == 11 and carta_crupier[1] == 10) or (carta_crupier[0] == 10 and carta_crupier[1] == 11):
-        #     blackjack_natural = True
         print()
         print("La suma de las cartas del croupier hasta el momento \nes: ", acum_croupier_puntaje)
         print('*-' * 25)
@@ -117,51 +112,40 @@ def jugar_una_mano(pozo):
     return ganador, pozo, blackjack_natural
 
 
-def bandera_1er_carta_as(carta):
-    if carta[0] == 11:
-        return True
-    return False
-
-
 # Determinar ganador
 def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont_cartas_croupier, pozo):
     ganador = None
-    blackjack_nat = False
+    blackjack_n = False
     if puntaje_jugador > 21 and puntaje_croupier > 21:
         ganador = "Croupier"
         pozo -= apuesta_mano
-    elif puntaje_jugador == puntaje_croupier and puntaje_jugador < 21 and puntaje_croupier < 21:
+    elif puntaje_jugador == puntaje_croupier and puntaje_jugador <= 21 and puntaje_croupier <= 21 and \
+            cont_cartas_croupier != 2 and cont_cartas_jugador != 2:
         ganador = "¡Fue un empate!"
-    elif puntaje_jugador == 21 and puntaje_croupier == 21:
-        if cont_cartas_jugador == 2 and cont_cartas_croupier == 2:
-            ganador = "¡Fue un empate!"
-            blackjack_nat = True
-            print("¡Ocurrió un Blackjack Natural! (Ás + una carta de valor 10.")
-        elif cont_cartas_jugador != 2 and cont_cartas_croupier == 2:
-            ganador = "Croupier"
-            pozo -= apuesta_mano
-        elif cont_cartas_jugador == 2 and cont_cartas_croupier != 2:
-            ganador = "Jugador"
-            pozo += apuesta_mano
     elif puntaje_jugador > 21:
         ganador = "Croupier"
         pozo -= apuesta_mano
-    elif puntaje_croupier > 21:
+    elif puntaje_croupier > 21 and cont_cartas_jugador != 2:
         ganador = "Jugador"
         pozo += apuesta_mano
-    elif puntaje_jugador > puntaje_croupier:
+    elif puntaje_jugador > puntaje_croupier and cont_cartas_jugador != 2:
         ganador = "Jugador"
         pozo += apuesta_mano
-        if cont_cartas_jugador == 2 and puntaje_jugador == 21:
-            print("¡El jugador obtuvo un Blackjack Natural!")
-            blackjack_nat = True
-    elif cont_cartas_croupier == 2 and puntaje_croupier == 21:
+    elif (cont_cartas_jugador == 2 and puntaje_jugador == 21) and (cont_cartas_croupier >= 2 and puntaje_croupier < 21):
+        ganador = "Jugador"
+        print("¡El jugador obtuvo un Blackjack Natural!")
+        blackjack_n = True
+        pozo += apuesta_mano
+    elif (cont_cartas_croupier == 2 and puntaje_croupier == 21) and cont_cartas_jugador >= 2 and puntaje_jugador < 21:
         ganador = "Croupier"
         print("¡El croupier obtuvo un Blackjack Natural!")
-        blackjack_nat = True
+        blackjack_n = True
         pozo -= apuesta_mano
-    elif (cont_cartas_jugador == 2 and puntaje_jugador == 21) and (cont_cartas_croupier == 2 and puntaje_croupier == 21):
+    elif (cont_cartas_jugador == 2 and puntaje_jugador == 21) and (
+            cont_cartas_croupier == 2 and puntaje_croupier == 21):
         ganador = "¡Fue un empate!"
+        print("¡Ambos obtuvieron un Blackjack Natural!")
+        blackjack_n = True
     else:
         ganador = "Croupier"
         pozo -= apuesta_mano
@@ -170,7 +154,7 @@ def definir_ganador(puntaje_jugador, puntaje_croupier, cont_cartas_jugador, cont
     else:
         print("El ganador es: ", ganador)
     print("Su pozo actual es:", pozo)
-    return ganador, pozo, blackjack_nat
+    return ganador, pozo, blackjack_n
 
 
 def mayor(primer_valor, segundo_valor):
@@ -180,7 +164,7 @@ def mayor(primer_valor, segundo_valor):
 # Fin sector de funciones
 
 
-# Sector Principal
+# Sector Principal.
 print('*-' * 25)
 bandera_nombre_valido = True
 nombre_jugador = input("\t¡Hola! Por favor, ingrese su nombre: ")
@@ -242,7 +226,7 @@ while opcion != "0" and (bandera_usuario_ingreso_numero_correcto is True) and ba
         apuesta_mano = int(input("Ingrese la apuesta para esta mano: "))
         print("El pozo actual es de: ", pozo, " pesos.")
         print('*-' * 25)
-        if validacion(apuesta_mano) <= pozo:
+        if 0 < validacion(apuesta_mano) <= pozo:
             acumulador_apuestas_jugador += apuesta_mano
             ganador_jugada, pozo, blackjack_natural = jugar_una_mano(pozo)
             if ganador_jugada == "Jugador":
@@ -256,25 +240,20 @@ while opcion != "0" and (bandera_usuario_ingreso_numero_correcto is True) and ba
             pozo_maximo = mayor(pozo, pozo_maximo)
             if blackjack_natural:
                 cont_black_natural += 1
-        else:
-            print("No posee fondos suficientes. Intente realizando una apuesta más baja.")
-            print('*-' * 25)
 
     elif opcion == "0":
         print('*-' * 25)
         print(f'{nombre_jugador} esperamos que haya disfrutado su juego')
         print('*-' * 25)
 
-
-# Arreglar salidas ya que no tienen un display correcto de los valores que deberían ser
-
+# Sector salidas/ resultados.
 print('*-' * 25)
 print("RESULTADOS DE LA PARTIDA: ")
 print()
 print(f'La racha mas larga del croupier fue de {mayor_racha_croupier} partidas ganadas.')
-print(f'Porcentaje de victorias del jugador {contador_ganadas_jugador*100/contador_jugadas}%.')
+print(f'Porcentaje de victorias del jugador {contador_ganadas_jugador * 100 / contador_jugadas}%.')
 print(f'Mayor pozo que tuvo el jugador: {pozo_maximo}.')
-print(f'Valor promedio de apuestas por jugada: {acumulador_apuestas_jugador/contador_jugadas} pesos.')
+print(f'Valor promedio de apuestas por jugada: {acumulador_apuestas_jugador / contador_jugadas} pesos.')
 print(f'La mayor perdida del jugador es: {mayor_perdida} pesos.')
 print(f'El pozo actual es: {pozo} pesos.')
 print(f'Cantidad de rondas donde hubo Blackjack Nartural: {cont_black_natural}.')
